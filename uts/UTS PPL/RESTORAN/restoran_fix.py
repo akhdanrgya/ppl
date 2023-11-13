@@ -26,11 +26,12 @@ elif kategori_0077 == '2':
     print("5. Es Cendol - Rp. 20,000")
 else:
     print("Kategori tidak valid. Silakan pilih 1 atau 2.")
+    exit()
 
 
 item_0077 = input("Pilih item (1-5): ")
 
-jumlah_0077 = int(input("Masukkan jumlah: "))
+
 
 if kategori_0077 == '1':
     if item_0077 == '1':
@@ -46,6 +47,8 @@ if kategori_0077 == '1':
     else:
         print("Item tidak valid. Silakan pilih 1-5.")
         harga_0077 = 0
+        exit()
+        
 elif kategori_0077 == '2':
     if item_0077 == '1':
         harga_0077 = 5000
@@ -60,8 +63,12 @@ elif kategori_0077 == '2':
     else:
         print("Item tidak valid. Silakan pilih 1-5.")
         harga_0077 = 0
+        exit()
 else:
     harga_0077 = 0
+    
+
+jumlah_0077 = int(input("Masukkan jumlah: "))
 
 
 if harga_0077 > 0:
@@ -94,6 +101,11 @@ if harga_0077 > 0:
     nama_0077 = input("Masukkan Nama: ")
 
     pembayaran_0077 = int(input("Masukkan nominal pembayaran: "))
+
+    if pembayaran_0077 < total_harga_setelah_diskon_0077:
+        print("Maaf uang anda tidak cukup untuk membayar item tersebut")
+        print(f"Kurang Rp.{abs(pembayaran_0077 - total_harga_setelah_diskon_0077)}")
+        exit()
 
     kembalian_0077 = pembayaran_0077 - total_harga_setelah_diskon_0077
     print("Kembalian: Rp. " + str(kembalian_0077))

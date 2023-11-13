@@ -40,7 +40,7 @@ if inp_pin_0077 == pin_0077:
         saldo_0077 = saldo_0077 + setor_tunai_0077
 
         print(f"""
-              === Setor Tunai Berhasil ==
+              === Setor Tunai Berhasil ===
               Nama          : {nama_0077}
               NIM           : {nim_0077}
               No Rekening   : {norek_0077}
@@ -61,7 +61,7 @@ if inp_pin_0077 == pin_0077:
         if saldo_0077 >= tarik_tunai_0077:
             saldo_0077 = saldo_0077 - tarik_tunai_0077
             print(f"""
-              === Tarik Tunai Berhasil ==
+              === Tarik Tunai Berhasil ===
               Nama          : {nama_0077}
               NIM           : {nim_0077}
               No Rekening   : {norek_0077}
