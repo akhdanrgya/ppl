@@ -1,15 +1,13 @@
 from datetime import datetime
-import os
 
 PIN_ADMIN = "123"
 HARGA_PER_MENIT = 10000
 DETTIK_BULAT_ATAS = 30
 
 data_parkir = []
-data_admin = {"pin": PIN_ADMIN, "log": []}
 
 
-def hitung_harga_parkir(waktu_masuk, waktu_keluar):
+def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
     try:
         selisih_waktu = waktu_keluar - waktu_masuk
         harga_parkir = round(
@@ -23,6 +21,7 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar):
             harga_parkir += denda
         else:
             denda = 0
+            harga_parkir = HARGA_PER_MENIT
 
         total = harga_parkir + denda
         print(f"Total harga yang harus anda bayar : {total}")
@@ -39,6 +38,11 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar):
 
         print(f"""
               ==== Struk Pembayaran ====
+              Plat          : {plat}
+              Waktu Masuk   : {waktu_masuk}
+              Waktu Keluar  : {waktu_keluar}
+
+
               Harga         : {total}
               Pembayaran    : {bayar}
               Kembalian     : {total_harga}
@@ -51,10 +55,9 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar):
 
 def menu_admin():
     try:
-        os.system('cls')
         pin_input = input("Masukkan PIN Admin: ")
 
-        if pin_input == data_admin["pin"]:
+        if pin_input == PIN_ADMIN:
             print("Menu Admin - Kelola Data Parkir")
             print("Data Parkir:")
             for entry in data_parkir:
@@ -84,15 +87,17 @@ def menu_admin():
 
 def main():
     try:
-        os.system('cls')
         print("Selamat datang di Aplikasi Parkir!")
 
         while True:
-            print("\nMenu Utama:")
-            print("1. Masuk area parkir")
-            print("2. Keluar area parkir")
-            print("3. Admin")
-            print("4. Keluar Aplikasi")
+            print("""
+                  ===== Parkir APP =====
+                  
+                  1. Masuk Kendaraan
+                  2. Keluar Kendaraan
+                  3. Admin
+                  4. Keluar Aplikasi
+                  """)
 
             pilihan_menu = input("Pilih menu (1/2/3/4): ")
 
@@ -115,7 +120,7 @@ def main():
                         entry["waktu_keluar"] = waktu_keluar
 
                         harga_parkir, denda = hitung_harga_parkir(
-                            entry["waktu_masuk"], entry["waktu_keluar"])
+                            entry["waktu_masuk"], entry["waktu_keluar"], plat_nomor)
                         entry["harga_parkir"] = harga_parkir
                         entry["denda"] = denda
 
@@ -127,11 +132,10 @@ def main():
             elif pilihan_menu == "3":
                 menu_admin()
             elif pilihan_menu == "4":
-                os.system('cls')
                 print("Terima kasih telah menggunakan Aplikasi Parkir!")
                 exit()
             else:
-                print("Pilihan tidak valid.")
+                print("Pilihan tidak tersedia :(")
     except Exception as error:
         print(f"Terjadi error : {error}")
 
