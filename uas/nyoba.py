@@ -1,25 +1,26 @@
-from datetime import datetime
+def minion_game(string):
+    # your code goes here
+    vowel = 'AEIOU'
+    vnum = 0
+    cnum = 0
+    n = len(string)
+    
+    for i, c in enumerate(string):
+        print(i,c,string)
+        if c in vowel:
+            vnum += n - i
+        else:
+            cnum += n - i
 
-data = []
+    if vnum == cnum:
+        print("Draw")
+    elif vnum > cnum:
+        print("Kevin " + str(vnum))
+    else:
+        print('Stuart ' + str(cnum))
+    
+    print(n)
+    print(i)
+    print(c)
 
-while True:
-    print("""
-          Selamat datang di parkir anjay
-          1. Masuk
-          2. Keluar
-          3. Admin
-          """)
-
-    pilih = input("Pilih mana bang? ")
-
-    if pilih == "1":
-        plat = input("Masukan plat anda: ")
-        waktu_masuk = datetime.now()
-        data.append(
-            {"plat": plat, "waktu masuk": waktu_masuk}
-        )
-    elif pilih == "2":
-        keluar = input("Masukan plat anda: ")
-        waktu_keluar = datetime.now()
-    elif pilih == "3":
-        print(data)
+minion_game("banana")

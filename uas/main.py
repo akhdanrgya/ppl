@@ -2,7 +2,6 @@ from datetime import datetime
 
 PIN_ADMIN = "123"
 HARGA_PER_MENIT = 10000
-DETTIK_BULAT_ATAS = 30
 
 data_parkir = []
 
@@ -10,43 +9,57 @@ data_parkir = []
 def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
     try:
         selisih_waktu = waktu_keluar - waktu_masuk
-        harga_parkir = round(
-            selisih_waktu.total_seconds() / 60) * HARGA_PER_MENIT
+        waktu_parkir_detik = selisih_waktu.total_seconds()
 
-        if selisih_waktu.total_seconds() > 240:
-            denda = harga_parkir * 0.1
-            harga_parkir += denda
-        elif selisih_waktu.total_seconds() > 360:
-            denda = harga_parkir * 0.25
-            harga_parkir += denda
-        else:
-            denda = 0
+        # Pembulatan waktu parkir
+        if waktu_parkir_detik < 60:
             harga_parkir = HARGA_PER_MENIT
+        elif waktu_parkir_detik <= 75:
+            harga_parkir = HARGA_PER_MENIT * 2  # Parkir dibulatkan ke 120 detik
+        elif waktu_parkir_detik <= 240:
+            harga_parkir = HARGA_PER_MENIT * 4  # Maksimal waktu parkir adalah 240 detik
+        elif waktu_parkir_detik > 240:
+            harga_parkir = HARGA_PER_MENIT * 4
+
+        # Perhitungan denda parkir
+        denda = 0
+        if waktu_parkir_detik > 240:
+            denda = harga_parkir * 0.1  # Denda 10% dari total biaya parkir
+            harga_parkir += denda
+        elif waktu_parkir_detik > 360:
+            denda = harga_parkir * 0.25  # Denda 25% dari total biaya parkir
+            harga_parkir += denda
 
         total = harga_parkir + denda
-        print(f"Total harga yang harus anda bayar : {total}")
+        print(f"Total harga yang harus anda bayar : Rp.{total:,.0f}")
 
-        bayar = int(input("Masukan nominal pembayaran: "))
+        bayar = 0
+        while True:
+            try:
+                bayar = int(input("Masukkan nominal pembayaran: "))
+                if bayar < total:
+                    print("Uang anda kurang. Mohon masukkan nominal yang cukup.")
+                else:
+                    break
+            except ValueError:
+                print("Masukkan angka bulat positif.")
 
-        if bayar >= harga_parkir:
-            total_harga = bayar - total
-            print(
-                f"Anda membayar {bayar} dari total harga parkir {total}, kembalian : {total_harga}")
-
-        else:
-            print("Maaf uang anda kurang")
+        total_harga = bayar - total
+        print(
+            f"Anda membayar Rp.{bayar:,.0f} dari total harga parkir Rp.{total:,.0f}, kembalian : Rp.{total_harga:,.0f}")
 
         print(f"""
-              ==== Struk Pembayaran ====
+              ========== PARKIR APP ==========
               Plat          : {plat}
-              Waktu Masuk   : {waktu_masuk}
-              Waktu Keluar  : {waktu_keluar}
+              Waktu Masuk   : {waktu_masuk.strftime("%Y-%m-%d %H:%M:%S")}
+              Waktu Keluar  : {waktu_keluar.strftime("%Y-%m-%d %H:%M:%S")}
 
+              Harga         : Rp.{harga_parkir - denda:,.0f}
+              Denda         : Rp.{denda:,.0f}
+              Total         : Rp.{total:,.0f}
 
-              Harga         : {total}
-              Pembayaran    : {bayar}
-              Kembalian     : {total_harga}
-              Denda         : {denda}
+              Pembayaran    : Rp.{bayar:,.0f}
+              Kembalian     : Rp.{total_harga:,.0f}
               """)
         return harga_parkir, denda
     except Exception as error:
@@ -78,11 +91,11 @@ def menu_admin():
                         f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
                     break
             else:
-                print("Data parkir tidak ditemukan.")
+                print("Data parkir tidak ditemukan :(")
         else:
-            print("PIN salah. Akses ditolak.")
+            print("PIN salah. Akses ditolak!!")
     except Exception as error:
-        print(f"Terjadi kesalahan : {error}")
+        print(f"Terjadi kesalahan menu admin : {error}")
 
 
 def main():
@@ -105,18 +118,17 @@ def main():
                 plat_nomor = input("Masukkan plat nomor kendaraan: ")
                 waktu_masuk = datetime.now()
                 print(
-                    f"Kendaraan dengan plat {plat_nomor} masuk pada {waktu_masuk}.")
+                    f"Kendaraan dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
+                print("Silahkan masuk :)")
 
                 data_parkir.append(
-                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": None})
-            elif pilihan_menu == "2":
-                plat_nomor = input("Masukkan plat nomor kendaraan: ")
-                waktu_keluar = datetime.now()
-                print(
-                    f"Kendaraan dengan plat {plat_nomor} keluar pada {waktu_keluar}.")
+                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum"})
 
+            elif pilihan_menu == "2":
+                waktu_keluar = datetime.now()
+                plat_nomor = input("Masukkan plat nomor kendaraan: ")
                 for entry in data_parkir:
-                    if entry["plat"] == plat_nomor and entry["waktu_keluar"] is None:
+                    if entry["plat"] == plat_nomor and entry["waktu_keluar"] == "Belum":
                         entry["waktu_keluar"] = waktu_keluar
 
                         harga_parkir, denda = hitung_harga_parkir(
@@ -128,7 +140,7 @@ def main():
                             f"\nTotal harga parkir: {harga_parkir} (Termasuk denda {denda})")
                         break
                 else:
-                    print("Data parkir tidak ditemukan.")
+                    print("Data parkir tidak ditemukan :(")
             elif pilihan_menu == "3":
                 menu_admin()
             elif pilihan_menu == "4":
@@ -137,7 +149,7 @@ def main():
             else:
                 print("Pilihan tidak tersedia :(")
     except Exception as error:
-        print(f"Terjadi error : {error}")
+        print(f"Terjadi kesalahan fungsi main : {error}")
 
 
 main()
