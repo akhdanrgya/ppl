@@ -3,7 +3,7 @@ from datetime import datetime
 PIN_ADMIN = "123"
 HARGA_PER_MENIT = 10000
 
-data_parkir = []
+data_parkir = [] # list yang nantinya akan di isi data dictionary
 
 
 def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
@@ -86,7 +86,7 @@ def menu_admin():
 
             for i, entry in enumerate(data_parkir):
                 if entry["plat"] == plat_nomor_hapus:
-                    data_parkir.pop(i)
+                    data_parkir.pop(i) # hapus data list sesuai index
                     print(
                         f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
                     break
@@ -103,7 +103,7 @@ def main():
         print("Selamat datang di Aplikasi Parkir!")
 
         while True:
-            print("""
+            print(f"""
                   ===== Parkir APP =====
                   
                   1. Masuk Kendaraan
@@ -120,9 +120,9 @@ def main():
                 print(
                     f"Kendaraan dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
                 print("Silahkan masuk :)")
-
+                
                 data_parkir.append(
-                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum"})
+                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum"}) # Menambah data dictionary ke data list
 
             elif pilihan_menu == "2":
                 waktu_keluar = datetime.now()
