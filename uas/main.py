@@ -9,13 +9,16 @@ data_parkir = [] # list yang nantinya akan di isi data dictionary
 def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
     try:
         selisih_waktu = waktu_keluar - waktu_masuk
-        waktu_parkir_detik = selisih_waktu.total_seconds()
+        # waktu_parkir_detik = selisih_waktu.total_seconds()
+        waktu_parkir_detik = 370
 
         # Pembulatan waktu parkir
-        if waktu_parkir_detik < 60:
+        if waktu_parkir_detik <= 60:
             harga_parkir = HARGA_PER_MENIT
-        elif waktu_parkir_detik <= 75:
+        elif waktu_parkir_detik <= 120:
             harga_parkir = HARGA_PER_MENIT * 2  # Parkir dibulatkan ke 120 detik
+        elif waktu_parkir_detik <= 180:
+            harga_parkir = HARGA_PER_MENIT * 3
         elif waktu_parkir_detik <= 240:
             harga_parkir = HARGA_PER_MENIT * 4  # Maksimal waktu parkir adalah 240 detik
         elif waktu_parkir_detik > 240:
@@ -23,14 +26,14 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
 
         # Perhitungan denda parkir
         denda = 0
-        if waktu_parkir_detik > 240:
+        if waktu_parkir_detik > 240 and waktu_parkir_detik < 360:
             denda = harga_parkir * 0.1  # Denda 10% dari total biaya parkir
             harga_parkir += denda
         elif waktu_parkir_detik > 360:
             denda = harga_parkir * 0.25  # Denda 25% dari total biaya parkir
             harga_parkir += denda
 
-        total = harga_parkir + denda
+        total = harga_parkir
         print(f"Total harga yang harus anda bayar : Rp.{total:,.0f}")
 
         bayar = 0
@@ -70,30 +73,52 @@ def menu_admin():
     try:
         pin_input = input("Masukkan PIN Admin: ")
 
-        if pin_input == PIN_ADMIN:
-            print("Menu Admin - Kelola Data Parkir")
-            print("Data Parkir:")
-            for entry in data_parkir:
-                print(
-                    f"Plat: {entry['plat']}, Waktu Masuk: {entry['waktu_masuk']}, Waktu Keluar: {entry['waktu_keluar']}")
+        while True:
+            if pin_input == PIN_ADMIN:
+                print("""
+                    Menu Admin - Kelola Data Parkir
+                    
+                    1.Riwayat Data Parkir
+                    2.Hapus Data Parkir
+                    3.Kembali 
+                    """)
+                
+                pilih = input("Pilih menu admin (1/2/3): ")
+                
+                
+                if pilih == "1":
+                    print("Data Parkir:")
+                    
+                    total = sum(item['harga_parkir'] for item in data_parkir)
+                    
+                    for entry in data_parkir:
+                        print(
+                            f"Plat: {entry['plat']}, Waktu Masuk: {entry['waktu_masuk']}, Waktu Keluar: {entry['waktu_keluar']}, harga parkir: {entry['harga_parkir']}, denda: {entry['denda']}")
+                        
+                    print(f"\n Total Pemasukan: {total}")
 
-            print("\nMenu Admin - Hapus Data Parkir")
-            plat_nomor_hapus = input(
-                "Masukkan plat nomor yang akan dihapus ( q untuk kembali ): ")
 
-            if plat_nomor_hapus == 'q':
-                main()
+                elif pilih == "2":
+                    print("\nMenu Admin - Hapus Data Parkir")
+                    plat_nomor_hapus = input(
+                        "Masukkan plat nomor yang akan dihapus ( q untuk kembali ): ")
 
-            for i, entry in enumerate(data_parkir):
-                if entry["plat"] == plat_nomor_hapus:
-                    data_parkir.pop(i) # hapus data list sesuai index
-                    print(
-                        f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
-                    break
+                    if plat_nomor_hapus == 'q':
+                        menu_admin()
+
+                    for i, entry in enumerate(data_parkir):
+                        if entry["plat"] == plat_nomor_hapus:
+                            data_parkir.pop(i) # hapus data list sesuai index
+                            print(
+                                f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
+                            break
+                    else:
+                        print("Data parkir tidak ditemukan :(")
+                
+                elif pilih == "3":
+                    main()
             else:
-                print("Data parkir tidak ditemukan :(")
-        else:
-            print("PIN salah. Akses ditolak!!")
+                print("PIN salah. Akses ditolak!!")
     except Exception as error:
         print(f"Terjadi kesalahan menu admin : {error}")
 
@@ -122,7 +147,7 @@ def main():
                 print("Silahkan masuk :)")
                 
                 data_parkir.append(
-                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum"}) # Menambah data dictionary ke data list
+                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum", "harga_parkir": 0.0, "denda": 0.0}) # Menambah data dictionary ke data list
 
             elif pilihan_menu == "2":
                 waktu_keluar = datetime.now()
@@ -139,6 +164,7 @@ def main():
                         print(
                             f"\nTotal harga parkir: {harga_parkir} (Termasuk denda {denda})")
                         break
+                    
                 else:
                     print("Data parkir tidak ditemukan :(")
             elif pilihan_menu == "3":
