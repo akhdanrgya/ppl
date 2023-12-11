@@ -119,6 +119,7 @@ def menu_admin():
                     main()
             else:
                 print("PIN salah. Akses ditolak!!")
+                break
     except Exception as error:
         print(f"Terjadi kesalahan menu admin : {error}")
 
