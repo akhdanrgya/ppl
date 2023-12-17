@@ -6,11 +6,17 @@ HARGA_PER_MENIT = 10000
 data_parkir = [] # list yang nantinya akan di isi data dictionary
 
 
-def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
+def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis):
     try:
         selisih_waktu = waktu_keluar - waktu_masuk
-        # waktu_parkir_detik = selisih_waktu.total_seconds()
-        waktu_parkir_detik = 370
+        waktu_parkir_detik = selisih_waktu.total_seconds()
+        # waktu_parkir_detik = 370
+        
+        # Mendapatkan komponen jam, menit, dan detik dari timedelta
+        hours, remainder = divmod(selisih_waktu.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
 
         # Pembulatan waktu parkir
         if waktu_parkir_detik <= 60:
@@ -53,9 +59,11 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
 
         print(f"""
               ========== PARKIR APP ==========
+              Kendaraan     : {jenis}
               Plat          : {plat}
               Waktu Masuk   : {waktu_masuk.strftime("%Y-%m-%d %H:%M:%S")}
               Waktu Keluar  : {waktu_keluar.strftime("%Y-%m-%d %H:%M:%S")}
+              Waktu Parkir  : {formatted_time}
 
               Harga         : Rp.{harga_parkir - denda:,.0f}
               Denda         : Rp.{denda:,.0f}
@@ -87,13 +95,21 @@ def menu_admin():
                 
                 
                 if pilih == "1":
-                    print("Data Parkir:")
+                    print(f"="* 52,"Data Parkir", "="* 52, "\n")
+                    print(f"{'Kendaraan':<10} {'Plat':<5} {'Waktu Masuk':<30} {'Waktu Keluar':<30} {'Waktu Parkir':<15} {'Harga Parkir':<15} {'Denda':<15}")
                     
                     total = sum(item['harga_parkir'] for item in data_parkir)
                     
                     for entry in data_parkir:
+                        waktu_masuk = entry['waktu_masuk']
+                        waktu_keluar = entry['waktu_keluar']
+                        waktu_parkir = entry['waktu_parkir']
+                        jenis = entry['jenis_kendaraan']
+                        
                         print(
-                            f"Plat: {entry['plat']}, Waktu Masuk: {entry['waktu_masuk']}, Waktu Keluar: {entry['waktu_keluar']}, harga parkir: {entry['harga_parkir']}, denda: {entry['denda']}")
+                            f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
+                        # print(
+                        #     f"Kendaraan : {jenis} ,Plat: {entry['plat']}, Waktu Masuk: {waktu_masuk}, Waktu Keluar: {waktu_keluar}, Waktu Parkir: {waktu_parkir}, harga parkir: {entry['harga_parkir']}, denda: {entry['denda']}")
                         
                     print(f"\n Total Pemasukan: {total}")
 
@@ -141,24 +157,36 @@ def main():
             pilihan_menu = input("Pilih menu (1/2/3/4): ")
 
             if pilihan_menu == "1":
+                jenis = input("Masukan jenis kendaraan: ")
                 plat_nomor = input("Masukkan plat nomor kendaraan: ")
                 waktu_masuk = datetime.now()
                 print(
-                    f"Kendaraan dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
-                print("Silahkan masuk :)")
+                    f"Kendaraan {jenis} dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
+                print("==== Gerbang terbuka silahkan masuk :) ====")
                 
                 data_parkir.append(
-                    {"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum", "harga_parkir": 0.0, "denda": 0.0}) # Menambah data dictionary ke data list
+                    {"jenis_kendaraan": jenis,"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum","waktu_parkir": "belum", "harga_parkir": 0.0, "denda": 0.0}) # Menambah data dictionary ke data list
 
             elif pilihan_menu == "2":
                 waktu_keluar = datetime.now()
                 plat_nomor = input("Masukkan plat nomor kendaraan: ")
                 for entry in data_parkir:
+                    
+                    waktu_masuk = entry['waktu_masuk']
+                        
+                    # Menghitung selisih waktu
+                    selisih_waktu = waktu_keluar - waktu_masuk
+                    hours, remainder = divmod(selisih_waktu.seconds, 3600) 
+                    minutes, seconds = divmod(remainder, 60)
+                        
+                    formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+                    
                     if entry["plat"] == plat_nomor and entry["waktu_keluar"] == "Belum":
                         entry["waktu_keluar"] = waktu_keluar
+                        entry["waktu_parkir"] = formatted_time
 
                         harga_parkir, denda = hitung_harga_parkir(
-                            entry["waktu_masuk"], entry["waktu_keluar"], plat_nomor)
+                            entry["waktu_masuk"], entry["waktu_keluar"], plat_nomor, entry['jenis_kendaraan'])
                         entry["harga_parkir"] = harga_parkir
                         entry["denda"] = denda
 
