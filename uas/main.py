@@ -16,11 +16,11 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat):
         if waktu_parkir_detik <= 60:
             harga_parkir = HARGA_PER_MENIT
         elif waktu_parkir_detik <= 120:
-            harga_parkir = HARGA_PER_MENIT * 2  # Parkir dibulatkan ke 120 detik
+            harga_parkir = HARGA_PER_MENIT * 2  # Parkir dibulatkan ke 120 detik lebih dari 1 menit
         elif waktu_parkir_detik <= 180:
-            harga_parkir = HARGA_PER_MENIT * 3
+            harga_parkir = HARGA_PER_MENIT * 3 # Parkir dibulatkan ke 180 detik atau lebih dari sama dengan 3 menit
         elif waktu_parkir_detik <= 240:
-            harga_parkir = HARGA_PER_MENIT * 4  # Maksimal waktu parkir adalah 240 detik
+            harga_parkir = HARGA_PER_MENIT * 4  # Maksimal waktu parkir adalah 240 detik atau 4 menit
         elif waktu_parkir_detik > 240:
             harga_parkir = HARGA_PER_MENIT * 4
 
