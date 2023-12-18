@@ -19,7 +19,7 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis):
         formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
 
         # Pembulatan waktu parkir
-        if waktu_parkir_detik <= 60:
+        if waktu_parkir_detik <= 60: # Parkir dibulatkan ke 60 detik
             harga_parkir = HARGA_PER_MENIT
         elif waktu_parkir_detik <= 120:
             harga_parkir = HARGA_PER_MENIT * 2  # Parkir dibulatkan ke 120 detik lebih dari 1 menit
