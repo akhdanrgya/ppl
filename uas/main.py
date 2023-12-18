@@ -80,9 +80,13 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis):
 def menu_admin():
     try:
         pin_input = input("Masukkan PIN Admin: ")
+        isauth = False
+        
+        if pin_input == PIN_ADMIN:
+            isauth = True
 
         while True:
-            if pin_input == PIN_ADMIN:
+            if isauth:
                 print("""
                     Menu Admin - Kelola Data Parkir
                     
@@ -129,7 +133,7 @@ def menu_admin():
                         print("Data parkir tidak ditemukan :(")
                 
                 elif pilih == "3":
-                    main()
+                    break
             else:
                 print("PIN salah. Akses ditolak!!")
                 break
