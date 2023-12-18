@@ -106,10 +106,7 @@ def menu_admin():
                         waktu_parkir = entry['waktu_parkir']
                         jenis = entry['jenis_kendaraan']
                         
-                        print(
-                            f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
-                        # print(
-                        #     f"Kendaraan : {jenis} ,Plat: {entry['plat']}, Waktu Masuk: {waktu_masuk}, Waktu Keluar: {waktu_keluar}, Waktu Parkir: {waktu_parkir}, harga parkir: {entry['harga_parkir']}, denda: {entry['denda']}")
+                        print(f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
                         
                     print(f"\n Total Pemasukan: {total}")
 
