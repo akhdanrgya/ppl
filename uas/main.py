@@ -3,7 +3,7 @@ from datetime import datetime
 PIN_ADMIN = "123"
 HARGA_PER_MENIT = 10000
 
-data_parkir = [] # list yang nantinya akan di isi data dictionary
+data_parkir = []  # list yang nantinya akan di isi data dictionary
 
 
 def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis, waktu_parkir):
@@ -13,14 +13,17 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis, waktu_parkir):
         # waktu_parkir_detik = 370
 
         # Pembulatan waktu parkir
-        if waktu_parkir_detik <= 60: # Parkir dibulatkan ke 60 detik
+        if waktu_parkir_detik <= 60:  # Parkir dibulatkan ke 60 detik
             harga_parkir = HARGA_PER_MENIT
         elif waktu_parkir_detik <= 120:
-            harga_parkir = HARGA_PER_MENIT * 2  # Parkir dibulatkan ke 120 detik lebih dari 1 menit
+            # Parkir dibulatkan ke 120 detik lebih dari 1 menit
+            harga_parkir = HARGA_PER_MENIT * 2
         elif waktu_parkir_detik <= 180:
-            harga_parkir = HARGA_PER_MENIT * 3 # Parkir dibulatkan ke 180 detik atau lebih dari sama dengan 3 menit
+            # Parkir dibulatkan ke 180 detik atau lebih dari sama dengan 3 menit
+            harga_parkir = HARGA_PER_MENIT * 3
         elif waktu_parkir_detik <= 240:
-            harga_parkir = HARGA_PER_MENIT * 4  # Maksimal waktu parkir adalah 240 detik atau 4 menit
+            # Maksimal waktu parkir adalah 240 detik atau 4 menit
+            harga_parkir = HARGA_PER_MENIT * 4
         elif waktu_parkir_detik > 240:
             harga_parkir = HARGA_PER_MENIT * 4
 
@@ -75,7 +78,7 @@ def menu_admin():
     try:
         pin_input = input("Masukkan PIN Admin: ")
         isauth = False
-        
+
         if pin_input == PIN_ADMIN:
             isauth = True
 
@@ -88,26 +91,26 @@ def menu_admin():
                     2.Hapus Data Parkir
                     3.Kembali 
                     """)
-                
+
                 pilih = input("Pilih menu admin (1/2/3): ")
-                
-                
+
                 if pilih == "1":
-                    print(f"="* 52,"Data Parkir", "="* 52, "\n")
-                    print(f"{'Kendaraan':<10} {'Plat':<5} {'Waktu Masuk':<30} {'Waktu Keluar':<30} {'Waktu Parkir':<15} {'Harga Parkir':<15} {'Denda':<15}")
-                    
+                    print(f"=" * 52, "Data Parkir", "=" * 52, "\n")
+                    print(
+                        f"{'Kendaraan':<10} {'Plat':<5} {'Waktu Masuk':<30} {'Waktu Keluar':<30} {'Waktu Parkir':<15} {'Harga Parkir':<15} {'Denda':<15}")
+
                     total = sum(item['harga_parkir'] for item in data_parkir)
-                    
+
                     for entry in data_parkir:
                         waktu_masuk = entry['waktu_masuk']
                         waktu_keluar = entry['waktu_keluar']
                         waktu_parkir = entry['waktu_parkir']
                         jenis = entry['jenis_kendaraan']
-                        
-                        print(f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
-                        
-                    print(f"\n Total Pemasukan: {total}")
 
+                        print(
+                            f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
+
+                    print(f"\n Total Pemasukan: {total}")
 
                 elif pilih == "2":
                     print("\nMenu Admin - Hapus Data Parkir")
@@ -119,13 +122,13 @@ def menu_admin():
 
                     for i, entry in enumerate(data_parkir):
                         if entry["plat"] == plat_nomor_hapus:
-                            data_parkir.pop(i) # hapus data list sesuai index
+                            data_parkir.pop(i)  # hapus data list sesuai index
                             print(
                                 f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
                             break
                     else:
                         print("Data parkir tidak ditemukan :(")
-                
+
                 elif pilih == "3":
                     break
             else:
@@ -158,24 +161,25 @@ def main():
                 print(
                     f"Kendaraan {jenis} dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
                 print("==== Gerbang terbuka silahkan masuk :) ====")
-                
+
                 data_parkir.append(
-                    {"jenis_kendaraan": jenis,"plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum","waktu_parkir": "belum", "harga_parkir": 0.0, "denda": 0.0}) # Menambah data dictionary ke data list
+                    {"jenis_kendaraan": jenis, "plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum", "waktu_parkir": "belum", "harga_parkir": 0.0, "denda": 0.0})  # Menambah data dictionary ke data list
 
             elif pilihan_menu == "2":
                 waktu_keluar = datetime.now()
                 plat_nomor = input("Masukkan plat nomor kendaraan: ")
                 for entry in data_parkir:
-                    
+
                     waktu_masuk = entry['waktu_masuk']
-                        
+
                     # Menghitung total waktu parkir
                     selisih_waktu = waktu_keluar - waktu_masuk
-                    hours, remainder = divmod(selisih_waktu.seconds, 3600) 
+                    hours, remainder = divmod(selisih_waktu.seconds, 3600)
                     minutes, seconds = divmod(remainder, 60)
-                        
-                    formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
-                    
+
+                    formatted_time = "{:02}:{:02}:{:02}".format(
+                        int(hours), int(minutes), int(seconds))
+
                     if entry["plat"] == plat_nomor and entry["waktu_keluar"] == "Belum":
                         entry["waktu_keluar"] = waktu_keluar
                         entry["waktu_parkir"] = formatted_time
@@ -188,7 +192,7 @@ def main():
                         print(
                             f"\nTotal harga parkir: {harga_parkir} (Termasuk denda {denda})")
                         break
-                    
+
                 else:
                     print("Data parkir tidak ditemukan :(")
             elif pilihan_menu == "3":
