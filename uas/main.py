@@ -11,12 +11,6 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis, waktu_parkir):
         selisih_waktu = waktu_keluar - waktu_masuk
         waktu_parkir_detik = selisih_waktu.total_seconds()
         # waktu_parkir_detik = 370
-        
-        # Mendapatkan komponen jam, menit, dan detik dari timedelta
-        # hours, remainder = divmod(selisih_waktu.seconds, 3600)
-        # minutes, seconds = divmod(remainder, 60)
-
-        # formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
 
         # Pembulatan waktu parkir
         if waktu_parkir_detik <= 60: # Parkir dibulatkan ke 60 detik
@@ -175,7 +169,7 @@ def main():
                     
                     waktu_masuk = entry['waktu_masuk']
                         
-                    # Menghitung selisih waktu
+                    # Menghitung total waktu parkir
                     selisih_waktu = waktu_keluar - waktu_masuk
                     hours, remainder = divmod(selisih_waktu.seconds, 3600) 
                     minutes, seconds = divmod(remainder, 60)
