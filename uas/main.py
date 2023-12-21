@@ -6,17 +6,17 @@ HARGA_PER_MENIT = 10000
 data_parkir = [] # list yang nantinya akan di isi data dictionary
 
 
-def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis):
+def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis, waktu_parkir):
     try:
         selisih_waktu = waktu_keluar - waktu_masuk
         waktu_parkir_detik = selisih_waktu.total_seconds()
         # waktu_parkir_detik = 370
         
         # Mendapatkan komponen jam, menit, dan detik dari timedelta
-        hours, remainder = divmod(selisih_waktu.seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
+        # hours, remainder = divmod(selisih_waktu.seconds, 3600)
+        # minutes, seconds = divmod(remainder, 60)
 
-        formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+        # formatted_time = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
 
         # Pembulatan waktu parkir
         if waktu_parkir_detik <= 60: # Parkir dibulatkan ke 60 detik
@@ -63,7 +63,7 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis):
               Plat          : {plat}
               Waktu Masuk   : {waktu_masuk.strftime("%Y-%m-%d %H:%M:%S")}
               Waktu Keluar  : {waktu_keluar.strftime("%Y-%m-%d %H:%M:%S")}
-              Waktu Parkir  : {formatted_time}
+              Waktu Parkir  : {waktu_parkir}
 
               Harga         : Rp.{harga_parkir - denda:,.0f}
               Denda         : Rp.{denda:,.0f}
@@ -187,7 +187,7 @@ def main():
                         entry["waktu_parkir"] = formatted_time
 
                         harga_parkir, denda = hitung_harga_parkir(
-                            entry["waktu_masuk"], entry["waktu_keluar"], plat_nomor, entry['jenis_kendaraan'])
+                            entry["waktu_masuk"], entry["waktu_keluar"], plat_nomor, entry['jenis_kendaraan'], entry['waktu_parkir'])
                         entry["harga_parkir"] = harga_parkir
                         entry["denda"] = denda
 
