@@ -207,7 +207,7 @@ def main():
                         )
                         entry["harga_parkir"] = harga_parkir
                         entry["denda"] = denda
-
+    
                         print(
                             f"\nTotal harga parkir: {harga_parkir} (Termasuk denda {denda})")
                         break
