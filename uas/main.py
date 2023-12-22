@@ -96,26 +96,38 @@ def menu_admin():
 
                 if pilih == "1":
                     print(f"=" * 52, "Data Parkir", "=" * 52, "\n")
-                    print(
-                        f"{'Kendaraan':<10} {'Plat':<5} {'Waktu Masuk':<30} {'Waktu Keluar':<30} {'Waktu Parkir':<15} {'Harga Parkir':<15} {'Denda':<15}")
+                    # print(
+                    #     f"{'Kendaraan':<10} {'Plat':<13} {'Waktu Masuk':<30} {'Waktu Keluar':<30} {'Waktu Parkir':<15} {'Harga Parkir':<15} {'Denda':<15}")
 
                     total = sum(item['harga_parkir'] for item in data_parkir)
 
-                    for entry in data_parkir:
+                    for i, entry in enumerate(data_parkir):
                         waktu_masuk = entry['waktu_masuk']
                         waktu_keluar = entry['waktu_keluar']
                         waktu_parkir = entry['waktu_parkir']
                         jenis = entry['jenis_kendaraan']
 
-                        print(
-                            f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
+                        # print(
+                        #     f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
+
+                        print(f"""
+                            ({i + 1})   
+                            Jenis Kendaraan : {jenis}
+                            Plat Kendaraan  : {entry['plat']}
+                            Waktu Masuk     : {waktu_masuk}
+                            Waktu Keluar    : {waktu_keluar}
+                            Waktu Parkir    : {waktu_parkir}
+                            
+                            Harga Parkir    : {entry['harga_parkir']}
+                            Denda Parkir    : {entry['denda']}
+                              """)
 
                     print(f"\n Total Pemasukan: {total}")
 
                 elif pilih == "2":
                     print("\nMenu Admin - Hapus Data Parkir")
                     plat_nomor_hapus = input(
-                        "Masukkan plat nomor yang akan dihapus ( q untuk kembali ): ")
+                        "Masukkan plat nomor yang akan dihapus ( q untuk kembali ): ").upper()
 
                     if plat_nomor_hapus == 'q':
                         menu_admin()
@@ -156,11 +168,12 @@ def main():
 
             if pilihan_menu == "1":
                 jenis = input("Masukan jenis kendaraan: ")
-                plat_nomor = input("Masukkan plat nomor kendaraan: ")
+                plat_nomor = input("Masukkan plat nomor kendaraan: ").upper()
                 waktu_masuk = datetime.now()
                 print(
                     f"Kendaraan {jenis} dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
-                print("==== Gerbang terbuka silahkan masuk :) ====")
+                print("==== Gerbang terbuka ====")
+                print(f"Silahkan masuk plat {plat_nomor}")
 
                 data_parkir.append({
                     "jenis_kendaraan": jenis,
@@ -174,7 +187,7 @@ def main():
 
             elif pilihan_menu == "2":
                 waktu_keluar = datetime.now()
-                plat_nomor = input("Masukkan plat nomor kendaraan: ")
+                plat_nomor = input("Masukkan plat nomor kendaraan: ").upper()
                 for entry in data_parkir:
 
                     waktu_masuk = entry['waktu_masuk']
