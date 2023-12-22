@@ -87,9 +87,9 @@ def menu_admin():
                 print("""
                     Menu Admin - Kelola Data Parkir
                     
-                    1.Riwayat Data Parkir
-                    2.Hapus Data Parkir
-                    3.Kembali 
+                    1. Riwayat Data Parkir
+                    2. Hapus Data Parkir
+                    3. Kembali 
                     """)
 
                 pilih = input("Pilih menu admin (1/2/3): ")
@@ -162,8 +162,15 @@ def main():
                     f"Kendaraan {jenis} dengan plat {plat_nomor} masuk pada {waktu_masuk.strftime('%Y-%m-%d %H:%M:%S')}.")
                 print("==== Gerbang terbuka silahkan masuk :) ====")
 
-                data_parkir.append(
-                    {"jenis_kendaraan": jenis, "plat": plat_nomor, "waktu_masuk": waktu_masuk, "waktu_keluar": "Belum", "waktu_parkir": "belum", "harga_parkir": 0.0, "denda": 0.0})  # Menambah data dictionary ke data list
+                data_parkir.append({
+                    "jenis_kendaraan": jenis,
+                    "plat": plat_nomor,
+                    "waktu_masuk": waktu_masuk,
+                    "waktu_keluar": "Belum",
+                    "waktu_parkir": "belum",
+                    "harga_parkir": 0.0,
+                    "denda": 0.0
+                })  # Menambah data dictionary ke data list
 
             elif pilihan_menu == "2":
                 waktu_keluar = datetime.now()
@@ -185,7 +192,12 @@ def main():
                         entry["waktu_parkir"] = formatted_time
 
                         harga_parkir, denda = hitung_harga_parkir(
-                            entry["waktu_masuk"], entry["waktu_keluar"], plat_nomor, entry['jenis_kendaraan'], entry['waktu_parkir'])
+                            entry["waktu_masuk"],
+                            entry["waktu_keluar"],
+                            plat_nomor,
+                            entry['jenis_kendaraan'],
+                            entry['waktu_parkir']
+                        )
                         entry["harga_parkir"] = harga_parkir
                         entry["denda"] = denda
 
