@@ -96,9 +96,6 @@ def menu_admin():
 
                 if pilih == "1":
                     print(f"=" * 52, "Data Parkir", "=" * 52, "\n")
-                    # print(
-                    #     f"{'Kendaraan':<10} {'Plat':<13} {'Waktu Masuk':<30} {'Waktu Keluar':<30} {'Waktu Parkir':<15} {'Harga Parkir':<15} {'Denda':<15}")
-
                     total = sum(item['harga_parkir'] for item in data_parkir)
 
                     for i, entry in enumerate(data_parkir):
@@ -106,9 +103,6 @@ def menu_admin():
                         waktu_keluar = entry['waktu_keluar']
                         waktu_parkir = entry['waktu_parkir']
                         jenis = entry['jenis_kendaraan']
-
-                        # print(
-                        #     f"{jenis}{' ' * 6}{entry['plat']}{' ' * 4}{waktu_masuk}{' ' * 5}{waktu_keluar}{' ' * 5}{waktu_parkir}{' ' * 8}{entry['harga_parkir']}{' ' * 11}{entry['denda']}")
 
                         print(f"""
                             ({i + 1})   
