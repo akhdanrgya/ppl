@@ -77,13 +77,13 @@ def hitung_harga_parkir(waktu_masuk, waktu_keluar, plat, jenis, waktu_parkir):
 def menu_admin():
     try:
         pin_input = input("Masukkan PIN Admin: ")
-        isauth = False
+        auth = False
 
         if pin_input == PIN_ADMIN:
-            isauth = True
+            auth = True
 
         while True:
-            if isauth:
+            if auth:
                 print("""
                     Menu Admin - Kelola Data Parkir
                     
@@ -120,11 +120,17 @@ def menu_admin():
 
                 elif pilih == "2":
                     print("\nMenu Admin - Hapus Data Parkir")
+                    for i, entry in enumerate(data_parkir):
+                        print(f"""
+                              {i+1}
+                              Jenis Kendaraan : {entry['jenis_kendaraan']}
+                              Plat Kendaraan  : {entry['plat']}
+                              """)
                     plat_nomor_hapus = input(
                         "Masukkan plat nomor yang akan dihapus ( q untuk kembali ): ").upper()
 
-                    if plat_nomor_hapus == 'q':
-                        menu_admin()
+                    if plat_nomor_hapus == 'Q':
+                        continue
 
                     for i, entry in enumerate(data_parkir):
                         if entry["plat"] == plat_nomor_hapus:
@@ -132,8 +138,8 @@ def menu_admin():
                             print(
                                 f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
                             break
-                    else:
-                        print("Data parkir tidak ditemukan :(")
+                        else:
+                            print("Data parkir tidak ditemukan :(")
 
                 elif pilih == "3":
                     break
