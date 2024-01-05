@@ -78,6 +78,7 @@ def menu_admin():
     try:
         pin_input = input("Masukkan PIN Admin: ")
         auth = False
+        found = False
 
         if pin_input == PIN_ADMIN:
             auth = True
@@ -137,9 +138,10 @@ def menu_admin():
                             data_parkir.pop(i)  # hapus data list sesuai index
                             print(
                                 f"Data parkir dengan plat {plat_nomor_hapus} berhasil dihapus.")
+                            found = True
                             break
-                        else:
-                            print("Data parkir tidak ditemukan :(")
+                    if not found:
+                        print("Data parkir tidak ditemukan :(")
 
                 elif pilih == "3":
                     break
